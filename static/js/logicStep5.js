@@ -155,11 +155,8 @@ L.geoJSON(data, {
     }
   }).addTo(earthquakes);
 
-    // earthquakes.addTo(map);
-
-});
-
-// Create a legend control object.
+    earthquakes.addTo(map);
+    // Create a legend control object.
 let legend = L.control({
   position: "bottomright"
 });
@@ -188,8 +185,11 @@ for (var i = 0; i < magnitudes.length; i++) {
 }
 return div;
 };
-
 legend.addTo(map);
+});
+
+
+
 // // Grabbing our GeoJSON data.
 // d3.json(torontoHoods).then(function(data) {
 //   console.log(data);
