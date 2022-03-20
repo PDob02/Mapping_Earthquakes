@@ -55,13 +55,14 @@ L.control.layers(baseMaps, overlays).addTo(map);
 let majorEarthquakesData ="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson";
   console.log("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson") 
 
-function styleInfo(feature) {
+function styleInfo2(feature) {
+  console.log(feature)
   return {
     opacity: 1,
     fillOpacity: 1,
-    fillColor: getColor(features.properties.mag),
+    fillColor: getColor(feature.properties.mag),
     color: "#000000",
-    radius: getRadius(features.properties.mag),
+    radius: getRadius(feature.properties.mag),
     stroke: true,
     weight: 0.5
   };
@@ -101,7 +102,7 @@ L.geoJSON(data, {
       console.log(data);
       return L.circleMarker(latlng);
     },
-  style: styleInfo,
+  style: styleInfo2,
   onEachFeature: function(feature, layer) {
     layer.bindPopup("Magnitude: " + feature.properties.mag + "<br>Location: " + feature.properties.place);
   }
@@ -109,8 +110,6 @@ L.geoJSON(data, {
 
   });
   majorEarthquakes.addTo(map);
- 
-
 
 // Retrieve the earthquake GeoJSON data.
 d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(function(data) {
@@ -129,7 +128,6 @@ function styleInfo(feature) {
 L.geoJSON(data, {
     // We turn each feature into a circleMarker on the map.
       pointToLayer: function(feature, latlng) {
-          console.log(data);
           return L.circleMarker(latlng);
         },
     // We set the style for each circleMarker using our styleInfo function.
