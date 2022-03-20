@@ -97,21 +97,18 @@ d3.json(majorEarthquakesData).then(function(data) {
   console.log(data);
 // Creating a GeoJSON layer with the retrieved data.
 L.geoJSON(data, {
-  color: "#ff8c00",
-  weight: 2,
-  pointToLayer: function(feature, latlng) {
-    console.log(data);
-    return L.circleMarker(latlng);
-  },
+    pointToLayer: function(feature, latlng) {
+      console.log(data);
+      return L.circleMarker(latlng);
+    },
   style: styleInfo,
   onEachFeature: function(feature, layer) {
     layer.bindPopup("Magnitude: " + feature.properties.mag + "<br>Location: " + feature.properties.place);
   }
-})
-.addTo(majorEarthquakes);
+}).addTo(majorEarthquakes);
 
-majorEarthquakes.addTo(map);
-});
+  majorEarthquakes.addTo(map);
+  });
 
 
 // Retrieve the earthquake GeoJSON data.
@@ -158,7 +155,7 @@ function styleInfo(feature) {
 
 // L.geoJSON(data, {
 
-//   // We turn each feature into a circleMarker on the map.
+// //   // We turn each feature into a circleMarker on the map.
   
 //   pointToLayer: function(feature, latlng) {
 //               console.log(data);
