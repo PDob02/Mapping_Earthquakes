@@ -29,12 +29,12 @@ let baseMaps = {
 
 // Create the earthquake layer for our map.
 let earthquakes = new L.layerGroup();
-let tectonic = new L.layerGroup();
+let tectonicPlates = new L.layerGroup();
 // We define an object that contains the overlays.
 // This overlay will be visible all the time.
 let overlays = {
   "Earthquakes": earthquakes,
-  "Tectonic": tectonic,
+  "Tectonic": tectonicPlates,
 };
 
 // Then we add a control to the map that will allow the user to change
@@ -43,19 +43,32 @@ L.control.layers(baseMaps, overlays).addTo(map);
 
 // // Pass our map layers into our layers control and add the layers control to the map.
 // L.control.layers(baseMaps, overlays).addTo(map);
-
+let tectonicData = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
 // Accessing the tectonic GeoJSON URL
-d3.json("https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json").then(function(data){
-  function styleInfo(feature) {
-    return{
-      opacity: 2,
-      fillOpacity: 3,
-      fillColor: "orange",
-      weight: 0.5
-    };
+d3.json(tectonicData).then(function(data) {
+  console.log(data);
+// Creating a GeoJSON layer with the retrieved data.
+L.geoJSON(data, {
+  color: "#ffffa1",
+  weight: 2,
+  onEachFeature: function(feature, layer) {
+    layer.bindPopup("<h3> Name: " + feature.properties.name + "</h3> <hr><h3> Source: "
+    + feature.properties.source + "</h3>");
   }
-}
-);
+})
+.addTo(tectonicPlates);
+});
+
+
+//   function styleInfo(feature) {
+//     return{
+//       opacity: 2,
+//       fillOpacity: 3,
+//       fillColor: "orange",
+//       weight: 0.5
+//     };
+//   }
+// );
 
 
 // // // Grabbing our GeoJSON data.
