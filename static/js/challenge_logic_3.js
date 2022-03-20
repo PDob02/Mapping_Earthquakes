@@ -14,9 +14,15 @@ attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStree
     accessToken: API_KEY
 });
 
+let dark = L.tileLayer('https://api.mapbox.com/styles/mapbox/dark-v10/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
+	maxZoom: 18,
+	accessToken: API_KEY
+});
+
 // Create the map object with center, zoom level and default layer.
 let map = L.map('mapid', {
-  center: [39.5, -98.5],
+  center: [40.7, -94.5],
   zoom: 3,
   layers: [streets]
 });
@@ -24,7 +30,8 @@ let map = L.map('mapid', {
 // Create a base layer that holds both maps.
 let baseMaps = {
   "Streets": streets,
-  "Satellite": satelliteStreets
+  "Satellite": satelliteStreets,
+  "Dark": dark
 };
 
 //Deliverable #1 for challenge: 
@@ -33,7 +40,7 @@ let earthquakes = new L.layerGroup();
 let tectonicPlates = new L.layerGroup();
 let majorEarthquakes = new L.layerGroup();
 
-// We define an object that contains the overlays.
+// 2. We define an object that contains the overlays.
 // This overlay will be visible all the time.
 let overlays = {
   "Earthquakes": earthquakes,
@@ -44,24 +51,6 @@ let overlays = {
 // Then we add a control to the map that will allow the user to change
 // which layers are visible.
 L.control.layers(baseMaps, overlays).addTo(map);
-
-// // Pass our map layers into our layers control and add the layers control to the map.
-// L.control.layers(baseMaps, overlays).addTo(map);
-let tectonicData = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
-// Accessing the tectonic GeoJSON URL
-d3.json(tectonicData).then(function(data) {
-  console.log(data);
-// Creating a GeoJSON layer with the retrieved data.
-L.geoJSON(data, {
-  color: "#ff8c00",
-  weight: 2,
-  onEachFeature: function(feature, layer) {
-    layer.bindPopup("<h3> Name: " + feature.properties.name + "</h3> <hr><h3> Source: "
-    + feature.properties.source + "</h3>");
-  }
-})
-.addTo(tectonicPlates);
-});
 
 let majorEarthquakesData ="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson";
 function styleInfo(feature) {
@@ -93,7 +82,8 @@ function getColor(magnitude) {
   }
   return "#98ee00";
 }
-
+  // This function determines the radius of the earthquake marker based on its magnitude.
+  // Earthquakes with a magnitude of 0 were being plotted with the wrong radius.
 function getRadius(magnitude) {
   if (magnitude === 0) {
     return 1;
@@ -208,7 +198,8 @@ L.geoJSON(data, {
       }
     }).addTo(earthquakes);
 
-      earthquakes.addTo(map);
+    earthquakes.addTo(map);
+
       // Create a legend control object.
     let legend = L.control({
       position: "bottomright"
@@ -239,6 +230,24 @@ L.geoJSON(data, {
     return div;
   };
     legend.addTo(map);
+});
+
+// // Pass our map layers into our layers control and add the layers control to the map.
+// L.control.layers(baseMaps, overlays).addTo(map);
+let tectonicData = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
+// Accessing the tectonic GeoJSON URL
+d3.json(tectonicData).then(function(data) {
+  console.log(data);
+// Creating a GeoJSON layer with the retrieved data.
+L.geoJSON(data, {
+  color: "#ff8c00",
+  weight: 2,
+  onEachFeature: function(feature, layer) {
+    layer.bindPopup("<h3> Name: " + feature.properties.name + "</h3> <hr><h3> Source: "
+    + feature.properties.source + "</h3>");
+  }
+})
+.addTo(tectonicPlates);
 });
 // // Grabbing our GeoJSON data.
 // d3.json(torontoHoods).then(function(data) {
