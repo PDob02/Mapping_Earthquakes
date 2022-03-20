@@ -99,15 +99,17 @@ d3.json(majorEarthquakesData).then(function(data) {
 L.geoJSON(data, {
   color: "#ff8c00",
   weight: 2,
-  style: styleInfo,
-  onEachFeature: function(feature, layer) {
-    layer.bindPopup("Magnitude: " + feature.properties.mag + "<br>Location: " + feature.properties.place);
+  pointToLayer: function(feature, latlng) {
+    console.log(data);
+    return L.circleMarker(latlng);
+    style: styleInfo
   }
 })
 .addTo(majorEarthquakes);
 
 majorEarthquakes.addTo(map);
 });
+
 
 // Retrieve the earthquake GeoJSON data.
 d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(function(data) {
