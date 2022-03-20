@@ -53,6 +53,8 @@ let overlays = {
 L.control.layers(baseMaps, overlays).addTo(map);
 
 let majorEarthquakesData ="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson";
+  console.log("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson") 
+
 function styleInfo(feature) {
   return {
     opacity: 1,
@@ -99,11 +101,12 @@ L.geoJSON(data, {
   weight: 2,
   style: styleInfo,
   onEachFeature: function(feature, layer) {
-    layer.bindPopup("<h3> Name: " + features.properties.name + "</h3> <hr><h3> Source: "
-    + features.properties.source + "</h3>");
+    layer.bindPopup("Magnitude: " + feature.properties.mag + "<br>Location: " + feature.properties.place);
   }
 })
 .addTo(majorEarthquakes);
+
+majorEarthquakes.addTo(map);
 });
 
 // Retrieve the earthquake GeoJSON data.
@@ -120,33 +123,33 @@ function styleInfo(feature) {
   };
 }
 
-// This function determines the color of the circle based on the magnitude of the earthquake.
-function getColor(magnitude) {
-  if (magnitude > 5) {
-    return "#ea2c2c";
-  }
-  if (magnitude > 4) {
-    return "#ea822c";
-  }
-  if (magnitude > 3) {
-    return "#ee9c00";
-  }
-  if (magnitude > 2) {
-    return "#eecc00";
-  }
-  if (magnitude > 1) {
-    return "#d4ee00";
-  }
-  return "#98ee00";
-}
-// This function determines the radius of the earthquake marker based on its magnitude.
-// Earthquakes with a magnitude of 0 will be plotted with a radius of 1.
-function getRadius(magnitude) {
-  if (magnitude === 0) {
-    return 1;
-  }
-  return magnitude * 4;
-}
+// // This function determines the color of the circle based on the magnitude of the earthquake.
+// function getColor(magnitude) {
+//   if (magnitude > 5) {
+//     return "#ea2c2c";
+//   }
+//   if (magnitude > 4) {
+//     return "#ea822c";
+//   }
+//   if (magnitude > 3) {
+//     return "#ee9c00";
+//   }
+//   if (magnitude > 2) {
+//     return "#eecc00";
+//   }
+//   if (magnitude > 1) {
+//     return "#d4ee00";
+//   }
+//   return "#98ee00";
+// }
+// // This function determines the radius of the earthquake marker based on its magnitude.
+// // Earthquakes with a magnitude of 0 will be plotted with a radius of 1.
+// function getRadius(magnitude) {
+//   if (magnitude === 0) {
+//     return 1;
+//   }
+//   return magnitude * 4;
+// }
 
 // L.geoJSON(data, {
 
@@ -249,29 +252,3 @@ L.geoJSON(data, {
 })
 .addTo(tectonicPlates);
 });
-// // Grabbing our GeoJSON data.
-// d3.json(torontoHoods).then(function(data) {
-//   console.log(data);
-// // Creating a GeoJSON layer with the retrieved data.
-//   L.geoJSON(data).addTo(map);
-// });
-
-// // Create a style for the lines.
-// let myStyle = {
-//   color: "#ffffa1",
-//   weight: 2
-// }
-/// Loop through the cities array and create one marker for each city.
-// cities.forEach(function(city) {
-//     console.log(city)
-//     L.marker(city.location).addTo(map);
-// });
-
-// We create the tile layer that will be the background of our map.
-// let streets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/{z}/{x}/{y}?access_token={accessToken}',  {
-// attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
-//     maxZoom: 5,
-//     accessToken: API_KEY
-//     });
-// // Then we add our 'graymap' tile layer to the map.
-// streets.addTo(map);
