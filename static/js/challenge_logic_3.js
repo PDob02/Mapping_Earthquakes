@@ -29,25 +29,14 @@ let baseMaps = {
 
 // Create the earthquake layer for our map.
 let earthquakes = new L.layerGroup();
-
+let tectonic = new L.layerGroup();
 // We define an object that contains the overlays.
 // This overlay will be visible all the time.
 let overlays = {
-  Earthquakes: earthquakes
+  "Earthquakes": earthquakes,
+  "Tectonic": tectonic,
 };
 
-// Then we add a control to the map that will allow the user to change
-// which layers are visible.
-L.control.layers(baseMaps, overlays).addTo(map);
-
-
-// Create the earthquake layer for our map.
-let earthquakes = new L.layerGroup();
-// We define an object that contains the overlays.
-// This overlay will be visible all the time.
-let overlays = {
-  Earthquakes: earthquakes
-};
 // Then we add a control to the map that will allow the user to change
 // which layers are visible.
 L.control.layers(baseMaps, overlays).addTo(map);
@@ -55,9 +44,18 @@ L.control.layers(baseMaps, overlays).addTo(map);
 // // Pass our map layers into our layers control and add the layers control to the map.
 // L.control.layers(baseMaps, overlays).addTo(map);
 
-
-// Accessing the airport GeoJSON URL
-// let torontoHoods = "https://raw.githubusercontent.com/PDob02/Mapping_Earthquakes/Mapping_GeoJSON_Polygons/torontoNeighborhoods.json";
+// Accessing the tectonic GeoJSON URL
+d3.json("https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json").then(function(data){
+  function styleInfo(feature) {
+    return{
+      opacity: 2,
+      fillOpacity: 3,
+      fillColor: "orange",
+      weight: 0.5
+    };
+  }
+}
+);
 
 
 // // // Grabbing our GeoJSON data.
@@ -69,12 +67,6 @@ L.control.layers(baseMaps, overlays).addTo(map);
 
 // Retrieve the earthquake GeoJSON data.
 d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(function(data) {
-  // Creating a GeoJSON layer with the retrieved data.
-// Creating a GeoJSON layer with the retrieved data.
-// Creating a GeoJSON layer with the retrieved data.
-// This function returns the style data for each of the earthquakes we plot on
-// the map. We pass the magnitude of the earthquake into a function
-// to calculate the radius.
 function styleInfo(feature) {
   return {
     opacity: 1,
