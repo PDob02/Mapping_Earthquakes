@@ -27,14 +27,18 @@ let baseMaps = {
   "Satellite": satelliteStreets
 };
 
+//Deliverable #1 for challenge: 
 // Create the earthquake layer for our map.
 let earthquakes = new L.layerGroup();
 let tectonicPlates = new L.layerGroup();
+let majorEarthquakes = new L.layerGroup();
+
 // We define an object that contains the overlays.
 // This overlay will be visible all the time.
 let overlays = {
   "Earthquakes": earthquakes,
   "Tectonic": tectonicPlates,
+  "Major Earthquakes": majorEarthquakes,
 };
 
 // Then we add a control to the map that will allow the user to change
@@ -49,7 +53,7 @@ d3.json(tectonicData).then(function(data) {
   console.log(data);
 // Creating a GeoJSON layer with the retrieved data.
 L.geoJSON(data, {
-  color: "#ffffa1",
+  color: "#ff8c00",
   weight: 2,
   onEachFeature: function(feature, layer) {
     layer.bindPopup("<h3> Name: " + feature.properties.name + "</h3> <hr><h3> Source: "
@@ -59,24 +63,21 @@ L.geoJSON(data, {
 .addTo(tectonicPlates);
 });
 
+let majorEarthquakesData ="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson";
 
-//   function styleInfo(feature) {
-//     return{
-//       opacity: 2,
-//       fillOpacity: 3,
-//       fillColor: "orange",
-//       weight: 0.5
-//     };
-//   }
-// );
-
-
-// // // Grabbing our GeoJSON data.
-// d3.json(torontoHoods).then(function(data) {
-//   console.log(data);
-// // Creating a GeoJSON layer with the retrieved data.
-//   L.geoJSON(data).addTo(map);
-// });
+d3.json(majorEarthquakesData).then(function(data) {
+  console.log(data);
+// Creating a GeoJSON layer with the retrieved data.
+L.geoJSON(data, {
+  color: "#ff8c00",
+  weight: 2,
+  onEachFeature: function(feature, layer) {
+    layer.bindPopup("<h3> Name: " + feature.properties.name + "</h3> <hr><h3> Source: "
+    + feature.properties.source + "</h3>");
+  }
+})
+.addTo(majorEarthquakes);
+});
 
 // Retrieve the earthquake GeoJSON data.
 d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(function(data) {
